@@ -56,3 +56,18 @@ class Bernoulli < Distribution
         end
     end
 end
+
+class Geometric < Distribution
+    def initialize(p)
+        @p = p
+    end
+    def pmf(k)
+        return @p * (1 - @p) ** (k-1)
+    end
+    def cdf(k)
+        return 1 - (1 - @p) ** k
+    end
+    def quantile(p)
+        return (Math.log(1-p) / Math.log(1-@p)).ceil
+    end
+end
