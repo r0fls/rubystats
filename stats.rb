@@ -71,3 +71,29 @@ class Geometric < Distribution
         return (Math.log(1-p) / Math.log(1-@p)).ceil
     end
 end
+
+class Laplace < Distribution
+    def initialize(m, b)
+        @m = m
+        @b = b
+    end
+    def pdf(x)
+        return Math.exp(-((x - @m).abs) / @b) / (2*@b)
+    end
+    def cdf(x)
+        if x < @m then
+            return Math.exp((x - @m) / @b) / 2
+        elsif x >= @m
+            return 1 - Math.exp(-(x - @m) / @b) / 2
+        end
+    end
+    def quantile(p)
+        if p > 0 and p <= 0.5 then
+            return @m + @b*Math.log(2*p)
+        elsif p > 0.5 && p < 1 then
+            return @m - @b*Math.log(2*(1-p))
+        else
+            raise ArgumentError.new("Wrong domain")
+        end
+    end
+end

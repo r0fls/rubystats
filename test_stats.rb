@@ -50,3 +50,22 @@ class TestGeometric < Test::Unit::TestCase
         assert_equal(3, geom.rand)
     end
 end
+class TestLaplace < Test::Unit::TestCase
+    def test_laplace_pmf
+        laplace = Laplace.new(0, 1)
+        assert_true(is_close(0.5, laplace.pdf(0)))
+    end
+    def test_laplace_cdf
+        laplace = Laplace.new(0, 1)
+        assert_true(is_close(0.5, laplace.cdf(0)))
+    end
+    def test_laplace_quantile
+        laplace = Laplace.new(0, 1)
+        assert_equal(0, laplace.quantile(0.5))
+    end
+    def test_laplace_rand
+        laplace = Laplace.new(0, 1)
+        laplace.seed(1)
+        assert_equal(-0.18146910894470789, laplace.rand)
+    end
+end
