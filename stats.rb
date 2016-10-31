@@ -137,3 +137,33 @@ class Exponential < Distribution
         return -Math.log(1 - p) / @l
     end
 end
+
+class Binomial < Distribution
+    def initialize(n, p)
+        @n = n
+        @p = p
+    end
+    def pmf(k)
+        return choose(@n, k) * (@p ** k) * ((1 - @p) ** (@n - k))
+    end
+    def cdf(k)
+        total = 0
+        for i in (0..k)
+            total += self.pmf(i)
+        end
+        return total
+    end
+    def quantile(p)
+        total = 0
+        j = 0
+        while total < p
+            j += 1
+            total += self.pmf(j)
+        end
+        return j
+    end
+end
+
+def choose(n, k)
+    return Math.gamma(n + 1) / (Math.gamma(k + 1) * Math.gamma(n - k + 1))
+end

@@ -72,6 +72,26 @@ class TestPoisson < Test::Unit::TestCase
     end
 end
 
+class TestBinomial < Test::Unit::TestCase
+    def test_binomial_pmf
+        binomial = Binomial.new(10, 0.5)
+        assert_true(is_close(0.24609375, binomial.pmf(5)))
+    end
+    def test_binomial_cdf
+        binomial = Binomial.new(10, 0.5)
+        assert_true(is_close(1, binomial.cdf(10)))
+    end
+    def test_binomial_quantile
+        binomial = Binomial.new(10, 0.5)
+        assert_equal(5, binomial.quantile(0.5))
+    end
+    def test_binomial_rand
+        binomial = Binomial.new(10, 0.5)
+        binomial.seed(1)
+        assert_equal(5, binomial.rand)
+    end
+end
+
 class TestExponential < Test::Unit::TestCase
     def test_exponential_pmf
         exponential = Exponential.new(0.2)
