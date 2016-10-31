@@ -72,6 +72,26 @@ class TestPoisson < Test::Unit::TestCase
     end
 end
 
+class TestExponential < Test::Unit::TestCase
+    def test_exponential_pmf
+        exponential = Exponential.new(0.2)
+        assert_true(is_close(0.07357588823428847, exponential.pdf(5)))
+    end
+    def test_exponential_cdf
+        exponential = Exponential.new(0.2)
+        assert_true(is_close(0.8646647167633873, exponential.cdf(10)))
+    end
+    def test_exponential_quantile
+        exponential = Exponential.new(0.2)
+        assert_equal(3.465735902799726, exponential.quantile(0.5))
+    end
+    def test_exponential_rand
+        exponential = Exponential.new(0.2)
+        exponential.seed(1)
+        assert_equal(2.698029186295927, exponential.rand)
+    end
+end
+
 class TestLaplace < Test::Unit::TestCase
     def test_laplace_pmf
         laplace = Laplace.new(0, 1)

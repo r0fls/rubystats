@@ -122,3 +122,18 @@ class Poisson < Distribution
         return j
     end
 end
+
+class Exponential < Distribution
+    def initialize(l)
+        @l = l
+    end
+    def pdf(x)
+        return @l * Math.exp(-@l * x)
+    end
+    def cdf(x)
+        return 1 - Math.exp(-@l * x)
+    end
+    def quantile(p)
+        return -Math.log(1 - p) / @l
+    end
+end
