@@ -92,6 +92,26 @@ class TestBinomial < Test::Unit::TestCase
     end
 end
 
+class TestNormal < Test::Unit::TestCase
+    def test_normal_pmf
+        normal = Normal.new(0, 1)
+        assert_true(is_close(0.3989422804014327, normal.pdf(0)))
+    end
+    def test_normal_cdf
+        normal = Normal.new(0, 1)
+        assert_true(is_close(0.5, normal.cdf(0)))
+    end
+    def test_normal_quantile
+        normal = Normal.new(0, 1)
+        assert_true(is_close(1.2815515655446004, normal.quantile(0.9)))
+    end
+    def test_normal_rand
+        normal = Normal.new(0, 1)
+        normal.seed(1)
+        assert_equal(-0.2095178409162432, normal.rand)
+    end
+end
+
 class TestExponential < Test::Unit::TestCase
     def test_exponential_pmf
         exponential = Exponential.new(0.2)

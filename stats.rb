@@ -164,6 +164,56 @@ class Binomial < Distribution
     end
 end
 
+class Normal < Distribution
+    def initialize(m, v)
+        @m = m
+        @v = v
+    end
+    def pdf(x)
+        return (1 / Math.sqrt(@v * 2 * Math::PI)) *
+            Math.exp(-((x - @m) ** 2)/(2 * @v))
+    end
+    def cdf(x)
+        return (1 + Math.erf((x - @m)/Math.sqrt(2 * @v))) / 2
+    end
+    def quantile(p)
+        return @m + Math.sqrt(@v * 2)*erfinv(2 * p - 1)
+    end
+end
+
+# Common functions
+
 def choose(n, k)
     return Math.gamma(n + 1) / (Math.gamma(k + 1) * Math.gamma(n - k + 1))
+end
+
+def erfinv(y)
+    center = 0.7
+    a = [ 0.886226899, -1.645349621,  0.914624893, -0.140543331]
+    b = [-2.118377725,  1.442710462, -0.329097515,  0.012229801]
+    c = [-1.970840454, -1.624906493,  3.429567803,  1.641345311]
+    d = [ 3.543889200,  1.637067800]
+    if y.abs <= center then
+        z = y ** 2
+        numer = (((a[3]*z + a[2])*z + a[1])*z) + a[0]
+        denom = ((((b[3]*z + b[2])*z + b[1])*z + b[0])*z + 1.0)
+        x = y * numer / denom
+        for _ in (0..5)
+            x =  x - (Math.erf(x) - y)/(2.0/Math.sqrt(Math::PI)*Math.exp(-x*x))
+        end
+        return x
+    elsif y.abs > center and y.abs < 1 then
+        z = Math.sqrt(-Math.log(1.0 - y.abs) / 2)
+        numer = ((c[3]*z + c[2])*z + c[1])*z + c[0]
+        denom = (d[1]*z + d[0])*z + 1
+        x = (y / y.abs) * numer / denom
+        for _ in (0..5)
+            x =  x - (Math.erf(x) - y)/(2.0/Math.sqrt(Math::PI)*Math.exp(-x*x))
+        end
+        return x
+    elsif y.abs == 1 then
+        return Float::INFINITY
+    else
+        raise ArgumentError.new("Invalid argument")
+    end
 end
