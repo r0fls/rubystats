@@ -31,6 +31,7 @@ class TestBernoulli < Test::Unit::TestCase
         assert_equal(1, bern.rand)
     end
 end
+
 class TestGeometric < Test::Unit::TestCase
     def test_geometric_pmf
         geom = Geometric.new(0.2)
@@ -50,6 +51,27 @@ class TestGeometric < Test::Unit::TestCase
         assert_equal(3, geom.rand)
     end
 end
+
+class TestPoisson < Test::Unit::TestCase
+    def test_poisson_pmf
+        poisson = Poisson.new(5)
+        assert_true(is_close(0.1754673697678507, poisson.pmf(5)))
+    end
+    def test_poisson_cdf
+        poisson = Poisson.new(5)
+        assert_true(is_close(0.9863047314016171, poisson.cdf(10)))
+    end
+    def test_poisson_quantile
+        poisson = Poisson.new(5)
+        assert_equal(5, poisson.quantile(0.5))
+    end
+    def test_poisson_rand
+        poisson = Poisson.new(5)
+        poisson.seed(1)
+        assert_equal(4, poisson.rand)
+    end
+end
+
 class TestLaplace < Test::Unit::TestCase
     def test_laplace_pmf
         laplace = Laplace.new(0, 1)

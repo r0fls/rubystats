@@ -97,3 +97,28 @@ class Laplace < Distribution
         end
     end
 end
+
+class Poisson < Distribution
+    def initialize(m)
+        @m = m
+    end
+    def pmf(k)
+        return (@m ** k) * Math.exp(-@m) / Math.gamma(k+1)
+    end
+    def cdf(k)
+        total = 0
+        for i in (0..k)
+            total += self.pmf(i)
+        end
+        return total
+    end
+    def quantile(p)
+        total = 0
+        j = 0
+        while total < p
+            j += 1
+            total += self.pmf(j)
+        end
+        return j
+    end
+end
